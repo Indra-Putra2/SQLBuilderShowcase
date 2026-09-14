@@ -1,0 +1,12 @@
+﻿@page "/ast"
+<h1 class="fw-bold">AST Visualizer</h1>
+
+<div class="card overflow-auto">
+    <div class="card-header">
+        SQL Expression 
+    </div>
+    <div class="fs-5 text-muted px-4 py-2">Input: @_input</div>
+    <div class="p-3">
+        @((MarkupString)_sb.ToString())
+    </div>
+</div>

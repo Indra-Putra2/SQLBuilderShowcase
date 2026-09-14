@@ -1,0 +1,177 @@
+﻿@page "/api"
+
+<div class="container border-bottom pb-3">
+    <h1 class="display-6 fw-bold text-primary mb-2">SQL Query Builder — API Implementation</h1>
+    <div class="d-flex gap-2 mb-2">
+        <span class="badge bg-primary">C#</span>
+        <span class="badge bg-secondary">SQLite</span>
+        <span class="badge bg-danger-subtle">ASP.NET Core</span>
+        <span class="badge bg-dark">Custom AST Compiler</span>
+        <span class="badge bg-info text-dark">Dapper</span>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <main class="d-flex flex-column gap-4">
+        <!-- 3-Second Summary -->
+        <section>
+            <h2 class="h4 fw-bold">Overview</h2>
+            <p class="lead fs-6 text-muted">
+                A custom domain-specific language (DSL) engine that tokenizes, parses, and statically analyzes string expressions into an <strong>Abstract Syntax Tree (AST)</strong> to compile secure, parameterized SQL at runtime.
+            </p>
+        </section>
+
+        <!-- Pipeline Diagram -->
+        <div>
+            <div class="card bg-dark text-light p-4 rounded-3 shadow">
+                <div class="fw-semibold fs-5 text-secondary text-uppercase tracking-wider mb-4">
+                    Architectural Pipeline
+                </div>
+
+                <!-- Pipeline Grid -->
+                <div class="overflow-auto d-flex flex-nowrap align-items-center gap-2 justify-content-between">
+
+                    <!-- Step 1 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-primary text-wrap mb-1 fs-6">1</span>
+                        <div class="fw-bold small">User Expression</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 2 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-secondary text-wrap mb-1 fs-6">2</span>
+                        <div class="fw-bold small">Tokenizer</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 3 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-secondary text-wrap mb-1 fs-6">3</span>
+                        <div class="fw-bold small">Parser</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 4 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-secondary text-wrap mb-1 fs-6">4</span>
+                        <div class="fw-bold small">AST</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 5 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-secondary text-wrap mb-1 fs-6">5</span>
+                        <div class="fw-bold small">Type Analysis</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 6 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-secondary text-wrap mb-1 fs-6">6</span>
+                        <div class="fw-bold small">Validation</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 7 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-success text-wrap mb-1 fs-6">7</span>
+                        <div class="fw-bold small">Generated SQL</div>
+                    </div>
+
+                    <i class="bi bi-arrow-right text-muted fs-4"></i>
+
+                    <!-- Step 8 -->
+                    <div class="card bg-body-tertiary border-0 text-center p-2 flex-fill" style="min-width: 110px;">
+                        <span class="badge bg-success text-wrap mb-1 fs-6">8</span>
+                        <div class="fw-bold small">Dapper Params</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Highlights (Scannable) -->
+        <section>
+            <h2 class="h4 fw-bold">Engine Highlights</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded h-100">
+                        <h3 class="h6 fw-bold text-primary">AST-Level Type Checking</h3>
+                        <p class="small text-muted mb-0">Validates binary expressions and identifiers against DTO metadata before touching the database.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded h-100">
+                        <h3 class="h6 fw-bold text-primary">Parameterized SQL Generation</h3>
+                        <p class="small text-muted mb-0">Prevents SQL injection by extracting raw user literals into parameterized values.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded h-100">
+                        <h3 class="h6 fw-bold text-primary">Query Base Caching</h3>
+                        <p class="small text-muted mb-0">Validates immutable base queries once during setup to avoid redundant parsing overhead.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded h-100">
+                        <h3 class="h6 fw-bold text-primary">DTO Schema Mapping</h3>
+                        <p class="small text-muted mb-0">Automatically maps domain model properties to safe table and column aliases.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Condensed Code Sample -->
+        <section>
+            <h2 class="h4 fw-bold">Fluent API Usage</h2>
+            <p class="text-muted">
+                The following example demonstrates a typical usage of the fluent API. It is not an exhaustive example of all available features and capabilities.
+            </p>
+            <pre class="bg-dark text-light p-3 rounded"><code>// 1. Build and validate base query structure once
+            private static readonly IQueryFilter BaseQuery = QueryBuilder
+                .Create&lt;RamReadModel&gt;()
+                .From&lt;RamBaseModel&gt;("r")
+                .Select("r.*, b.name as brandname")
+                .Join&lt;BrandBaseModel&gt;("b", "b.id = r.brandid")
+                .ValidateBaseQuery();
+
+            // 2. Dynamically apply AST expression filters at runtime
+            [HttpGet]
+            public IActionResult Get([FromQuery] string? where, [FromQuery] string? orderBy, [FromQuery] int? limit = 10)
+            {
+                var sql = _query
+                    .Where(where)
+                    .OrderBy(orderBy)
+                    .Limit(limit)
+                    .Build();
+
+                // compiled.SQL -> "SELECT r.*... WHERE r.price > @@p0 ORDER BY r.name LIMIT 10"
+                var result = _dbConnection.Query&lt;RamReadModel&gt;(compiled.SQL, compiled.Parameters);
+                return Ok(result);
+            }</code>
+            </pre>
+        </section>
+
+        <!-- Concise Limitation -->
+        <section>
+            <h2 class="h4 fw-bold">Current Limitations</h2>
+            <ul class="text-muted small">
+                <li>Not intended to implement the complete SQL language.</li>
+                <li>Only supported SQL expressions and query features can be parsed and validated.</li>
+                <li>Function return types require additional metadata for semantic validation.</li>
+                <li>Subquery is currently unsupported</li>
+            </ul>
+
+            <p class="small">
+                For the complete list of supported features and limitations,
+                see the <a href="/playground#limitations">Query Playground</a>.
+            </p>
+        </section>
+    </main>
+</div>

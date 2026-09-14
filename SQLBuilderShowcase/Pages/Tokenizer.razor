@@ -1,0 +1,145 @@
+﻿@page "/tokenizer"
+@using SQLQueryBuilder.Helper
+@using SQLQueryBuilder.Model.Context
+@inject HttpClient Http
+
+<PageTitle>Tokenizer Visualizer</PageTitle>
+
+<div class="card">
+	<div class="p-3">
+		<h1 class="card-header text-success-emphasis fw-bold">
+			Tokenizer Visualizer
+		</h1>
+	</div>
+
+	<div class="px-3">
+		<div class="alert alert-light">
+			<h5 class="fw-bold">About Tokenization</h5>
+			<p class="mb-0 text-muted">
+				The tokenizer converts raw SQL expressions into a sequence of tokens
+				that can be consumed by the parser. Each token contains its type,
+				position, and length, allowing the parser to understand the structure
+				of the expression.
+			</p>
+		</div>
+	</div>
+
+	<div class="row p-3">
+		<div class="col-md-12">
+			<label class="form-label fw-bold" for="TokenInput">
+				SQL Expression Input:
+			</label>
+
+			<textarea id="TokenInput"
+			class="form-control"
+			rows="5"
+			placeholder="e.g. price > 100 AND name LIKE 'RAM'"
+			@bind="_input">
+			</textarea>
+		</div>
+	</div>
+
+	<div class="row p-3">
+		<div class="col-md-2">
+			<button class="btn btn-outline-success fw-bold"
+			@onclick="Tokenize">
+				Tokenize
+			</button>
+		</div>
+		<div class="d-flex col-sm gap-3 justify-content-end">
+			<p class="text-muted my-auto">Premade Input:</p>
+			<button class="btn btn-outline-info fw-bold"
+					@onclick="() => LoadInput(1)">
+				Load Simple
+			</button>
+			<button class="btn btn-outline-info fw-bold"
+					@onclick="() => LoadInput(2)">
+				Load Complex
+			</button>
+		</div>
+	</div>
+
+	@if (_error != null)
+	{
+		<div class="p-3">
+			<div class="alert alert-danger">
+				<pre>
+					@_error
+				</pre>
+			</div>
+		</div>
+	}
+
+	@if (_context != null)
+	{
+		<div class="row p-3">
+			<div class="col-md-12">
+				<h5 class="fw-bold">
+					Tokens:
+				</h5>
+
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Type</th>
+							<th>Value</th>
+							<th>Start Position</th>
+							<th>Length</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						@foreach (var (token, index) in _tokens.Select((x, i) => (x, i)))
+						{
+							<tr>
+								<td>@index</td>
+								<td>@token.Type</td>
+								<td>@_context.GetSlice(token).ToString()</td>
+								<td>@token.StartPosition</td>
+								<td>@token.Length</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
+</div>
+
+
+@code {
+	private string _input = "name = \"Corsair\"";
+	private string? _error;
+	private IReadOnlyList<SQLToken> _tokens;
+	private SQLParserContext _context = null;
+	private SQLBuilderHelper _sQLbuilderHelper = new();
+
+
+	private void Tokenize()
+	{
+		try
+		{
+			_context = _sQLbuilderHelper.BuildTokens(_input);
+			_tokens = _context.Tokens;
+			_error = null;
+		}
+		catch (Exception ex)
+		{
+			_context = null;
+			_error = ex.Message;
+		}
+	}
+
+	private void LoadInput(int input)
+	{
+		_input = input switch
+		{
+			1 => "name = \"Corsair\"",
+			2 => "name = \"Corsair\" and price between 10 and 100 and ReviewCount > 100",
+			_ => "name = \"Corsair\""
+		};
+
+		Tokenize();
+	}
+}

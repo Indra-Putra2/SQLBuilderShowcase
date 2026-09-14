@@ -1,0 +1,18 @@
+﻿@inherits LayoutComponentBase
+
+<div class="min-vh-100">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark position-fixed top-0 start-0 vh-100"
+         style="width:250px">
+        <NavMenu />
+    </div>
+
+    <div class="min-vh-100 bg-body-tertiary" style="margin-left:250px;">
+        <main>
+            <article>
+                <div class="container ps-4 pe-3 py-4">
+                    @Body
+                </div>
+            </article>
+        </main>
+    </div>
+</div>
