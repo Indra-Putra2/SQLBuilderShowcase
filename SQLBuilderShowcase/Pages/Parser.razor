@@ -191,7 +191,7 @@
 							<ul class="list-unstyled mb-0 font-monospace fs-7">
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">Functions</span>
-									<code>AVG(r.price) TYPE DECIMAL</code>, <code>AVG(r.price) TYPE INT?</code>
+									<code>AVG(r.price) TYPE DECIMAL</code>, <code>AVG(r.price) CONST INT?</code>
 								</li>
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">Date</span>
@@ -228,6 +228,11 @@
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">?</span>
 									Marks a type as nullable, e.g. <code>INT?</code>
+								</li>
+								<li class="mb-2 d-flex align-items-center">
+									<span class="badge bg-secondary me-2" style="min-width: 75px;">Function</span>
+									Function syntax: [Name]([Arguments]) [TYPE] [CONST] [Return TYPE][?] —
+									&nbsp;<code>TYPE</code>,&nbsp;<code>CONST</code>&nbsp;and&nbsp;<code>?</code>&nbsp;are optional.
 								</li>
 							</ul>
 						</div>
@@ -547,6 +552,12 @@
 										Column aliases defined in <code>SELECT</code> cannot be referenced inside <code>WHERE</code> or <code>GROUP BY</code>.
 									</div>
 								</li>
+								<li class="mb-0 d-flex align-items-start">
+									<span class="badge bg-danger me-2 mt-1" style="min-width: 85px;">Row/tuple</span>
+									<div>
+										<strong>Row/tuple expressions are not currently supported.</strong> Parenthesized expressions must contain a single expression; constructs such as <code>(a, b)</code> are not yet implemented.
+									</div>
+								</li>
 							</ul>
 						</div>
 
@@ -566,13 +577,13 @@
 									<span class="badge bg-danger me-2 mt-1" style="min-width: 85px;">Functions</span>
 									<div>
 										Functions are parsed by their structure rather than their database-specific semantics.
-										Return types may require an explicit <code>TYPE</code> hint.
+										Return types require an explicit <code>TYPE</code> hint.
 									</div>
 								</li>
 								<li class="mb-3 d-flex align-items-start">
 									<span class="badge bg-danger me-2 mt-1" style="min-width: 85px;">TYPE Hint</span>
 									<div>
-										Aggregate return types require explicit hints (e.g., <code>TYPE DECIMAL</code>).
+										Aggregate return types require explicit hints (e.g., <code>TYPE DECIMAL</code>, <code>CONST DECIMAL?</code>).
 									</div>
 								</li>
 								<li class="mb-3 d-flex align-items-start">
