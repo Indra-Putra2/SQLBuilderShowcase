@@ -1,4 +1,5 @@
 ﻿@page "/tokenizer"
+@using SQLQueryBuilder.Core.Tokenizer
 @using SQLQueryBuilder.Helper
 @using SQLQueryBuilder.Model.Context
 @inject HttpClient Http
@@ -71,7 +72,7 @@
 		</div>
 	}
 
-	@if (_context != null)
+	@if (!string.IsNullOrWhiteSpace(_originalText))
 	{
 		<div class="row p-3">
 			<div class="col-md-12">
@@ -96,7 +97,7 @@
 							<tr>
 								<td>@index</td>
 								<td>@token.Type</td>
-								<td>@_context.GetSlice(token).ToString()</td>
+								<td>@GetSlice(token).ToString()</td>
 								<td>@token.StartPosition</td>
 								<td>@token.Length</td>
 							</tr>
@@ -112,22 +113,23 @@
 @code {
 	private string _input = "name = \"Corsair\"";
 	private string? _error;
+	private string _originalText = string.Empty;
 	private IReadOnlyList<SQLToken> _tokens;
-	private SQLParserContext _context = null;
-	private SQLBuilderHelper _sQLbuilderHelper = new();
-
 
 	private void Tokenize()
 	{
+		SQLParserContext context = new();
 		try
 		{
-			_context = _sQLbuilderHelper.BuildTokens(_input);
-			_tokens = _context.Tokens;
+			context = SQLBuilderHelper.BuildTokens(_input);
+			_tokens = context.Tokens;
+			_originalText = context.Span.ToString();
 			_error = null;
 		}
 		catch (Exception ex)
 		{
-			_context = null;
+			context = new();
+			_originalText = string.Empty;
 			_error = ex.Message;
 		}
 	}
@@ -140,5 +142,12 @@
 			2 => "name = \"Corsair\" and price between 10 and 100 and ReviewCount > 100",
 			_ => "name = \"Corsair\""
 		};
+
+		_originalText = string.Empty;
+	}
+
+	private string GetSlice(SQLToken token)
+	{
+		return _originalText.Substring(token.StartPosition, token.Length);
 	}
 }

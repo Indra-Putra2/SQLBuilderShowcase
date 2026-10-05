@@ -3,22 +3,23 @@ using SQLQueryBuilder.Helper;
 using SQLQueryBuilder.Interface;
 using SQLQueryBuilder.Model.SQL_Expression;
 using SQLQueryBuilder.SQLEnum;
+using SQLQueryBuilder.Core.SQLEnum.SQLExpression;
 using System.Data;
 using System.Data.Common;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using SQLQueryBuilder.Core.SQLExpression;
 
 namespace SQLBuilderShowcase.Pages
 {
     public partial class ASTVisualizer : IASTVisitor
-    {
-        private SQLBuilderHelper _helper = new SQLBuilderHelper();
+    { 
         private IASTTraverser _traverser;
         private StringBuilder _sb = new();
         private string _input = string.Empty;
         protected override void OnInitialized()
         {
-            _traverser = _helper.ASTWalkerBuiler(this);
+            _traverser = SQLBuilderHelper.ASTWalkerBuiler(this);
             LoadExpr(1);
         }
         private void CreateAST()
@@ -27,13 +28,13 @@ namespace SQLBuilderShowcase.Pages
 
             try
             {
-                _traverser.Walk(_helper.BuildExpression(_input));
+                _traverser.Walk(SQLBuilderHelper.BuildExpression(_input));
             }
             catch (Exception)
             {
                 try
                 {
-                    foreach(var select in _helper.BuildSelect(_input))
+                    foreach(var select in SQLBuilderHelper.BuildSelect(_input))
                     {
                         _traverser.Walk(select);
                     }
@@ -42,7 +43,7 @@ namespace SQLBuilderShowcase.Pages
                 {
                     try
                     {
-                        foreach (var order in _helper.BuildOrderBy(_input))
+                        foreach (var order in SQLBuilderHelper.BuildOrderBy(_input))
                         {
                             _traverser.Walk(order);
                         }
@@ -194,31 +195,34 @@ namespace SQLBuilderShowcase.Pages
                 {
                     Div("d-flex gap-2", () => 
                     {
-                        Div("border rounded-3 flex-shrink-0 py-2 px-3", () =>
+                        if(column.Table != null)
                         {
-                            Div("fw-bold text-muted fs-6", () => _sb.Append("Table"));
-
-                            Div("d-flex align-items-center gap-1 flex-wrap", () =>
+                            Div("border rounded-3 flex-shrink-0 py-2 px-3", () =>
                             {
-                                for (var i = 0; i < column.Table.Count; i++)
+                                Div("fw-bold text-muted fs-6", () => _sb.Append("Table"));
+
+                                Div("d-flex align-items-center gap-1 flex-wrap", () =>
                                 {
-                                    if (i > 0)
-                                        Div("text-muted", () => _sb.Append("."));
-
-                                    var item = column.Table[i];
-
-                                    Div("d-flex flex-column align-items-center", () =>
+                                    for (var i = 0; i < column.Table.Count; i++)
                                     {
-                                        Div("fw-bold", () => _sb.Append(item.Value));
+                                        if (i > 0)
+                                            Div("text-muted", () => _sb.Append("."));
 
-                                        Div("small text-muted", () =>
+                                        var item = column.Table[i];
+
+                                        Div("d-flex flex-column align-items-center", () =>
                                         {
-                                            _sb.Append(item.Delimiter);
+                                            Div("fw-bold", () => _sb.Append(item.Value));
+
+                                            Div("small text-muted", () =>
+                                            {
+                                                _sb.Append(item.Delimiter);
+                                            });
                                         });
-                                    });
-                                }
+                                    }
+                                });
                             });
-                        });
+                        }
                         Div("border rounded-3 flex-shrink-0 py-2 px-3", () =>
                         {
                             Div("fw-bold text-muted fs-6", () => _sb.Append("Value"));
