@@ -1,23 +1,23 @@
 ﻿@page "/ast"
-
-<div class="d-flex flex-column gap-4 p-3">
+<PageTitle>AST Visualizer</PageTitle>
+<div class="container d-flex flex-column gap-3">
 
     <div>
         <h1 class="fw-bold mb-1">AST Visualizer</h1>
+        <hr />
         <p class="text-muted fs-5 mb-0">
             Parse SQL and explore its Abstract Syntax Tree.
         </p>
     </div>
-
     <div class="card shadow-sm">
         <div class="card-header bg-body-tertiary">
             <label class="form-label fw-bold fs-5 mb-0" for="sqlInput">
-                SQL Input
+                SQL Expression Input
             </label>
         </div>
 
         <div class="card-body">
-            <textarea class="form-control font-monospace"
+            <textarea class="form-control"
                       id="sqlInput"
                       rows="4"
                       @bind="_input"></textarea>

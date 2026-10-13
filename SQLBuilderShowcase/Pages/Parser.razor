@@ -3,8 +3,10 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
+<PageTitle>Query Playground</PageTitle>
 <div class="container">
-	<h1 class="fw-bold">Parser Playground</h1>
+	<h1 class="fw-bold">Query Playground</h1>
+	<hr />
 	<p class="text-muted mb-4">
 		Paste your input below to watch your get turn into SQL query on the fly.
 	</p>
@@ -158,7 +160,7 @@
 						<!-- Identifiers & Functions -->
 						<div class="col-md-6">
 							<h6 class="fw-bold text-uppercase text-secondary fs-7">Clauses</h6>
-							<ul class="list-unstyled mb-0 font-monospace fs-7">
+							<ul class="list-unstyled mb-0 fs-7">
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">Select</span>
 									<code>r.Price</code>, <code>b.name</code>, <code>r.*</code>
@@ -189,7 +191,7 @@
 						<!-- Operators & Literals -->
 						<div class="col-md-6">
 							<h6 class="fw-bold text-uppercase text-secondary fs-7">Custom Syntax</h6>
-							<ul class="list-unstyled mb-0 font-monospace fs-7">
+							<ul class="list-unstyled mb-0 fs-7">
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">Functions</span>
 									<code>AVG(r.price) TYPE DECIMAL</code>, <code>AVG(r.price) CONST INT?</code>
@@ -214,7 +216,7 @@
 								Custom Syntax Explanation
 							</h6>
 
-							<ul class="list-unstyled mb-0 font-monospace fs-7">
+							<ul class="list-unstyled mb-0 fs-7">
 								<li class="mb-2 d-flex align-items-center">
 									<span class="badge bg-secondary me-2" style="min-width: 75px;">TYPE</span>
 									Defines the return type of a function.
@@ -242,8 +244,8 @@
 						<div class="col-12 border-top pt-3">
 							<span class="fw-bold d-block mb-1 text-muted fs-7 text-uppercase">Example Expressions:</span>
 							<div class="d-flex flex-wrap gap-2">
-								<span class="badge bg-dark font-monospace">r.Price &lt; 100 AND b.name LIKE '%Corsair%'</span>
-								<span class="badge bg-dark font-monospace">AVG(r.ReviewCount) Type Decimal? &gt; 100</span>
+								<span class="badge bg-dark">r.Price &lt; 100 AND b.name LIKE '%Corsair%'</span>
+								<span class="badge bg-dark">AVG(r.ReviewCount) Type Decimal? &gt; 100</span>
 							</div>
 						</div>
 					</div>
@@ -401,7 +403,7 @@
 						</div>
 					</div>
 					<div class="col-md-12">
-						<pre class="p-3 bg-dark rounded border mb-0 font-monospace @(_baseQueryError ? "text-danger border-danger" : "text-info")"
+						<pre class="p-3 bg-dark rounded border mb-0 @(_baseQueryError ? "text-danger border-danger" : "text-info")"
 							 style="min-height: 60px; font-size: 0.9rem;">@_baseQuery</pre>
 					</div>
 				</div>
@@ -421,7 +423,7 @@
 						</label>
 
 						<textarea id="WhereExpression"
-						class="form-control font-monospace"
+						class="form-control"
 						rows="2"
 						placeholder="e.g., r.Price < 100"
 						@bind="_where"></textarea>
@@ -434,7 +436,7 @@
 						</label>
 
 						<textarea id="WhereExpression"
-						class="form-control font-monospace"
+						class="form-control"
 						rows="2"
 						placeholder="e.g., r.Price"
 						@bind="_groupby"></textarea>
@@ -448,7 +450,7 @@
 						</label>
 						<!-- Changed @having inside content to @bind="having" -->
 						<textarea id="HavingExpression"
-						class="form-control font-monospace"
+						class="form-control"
 						rows="2"
 						placeholder="e.g., AVG(r.ReviewCount) > 100"
 						@bind="_having"></textarea>
@@ -462,7 +464,7 @@
 						</label>
 						<!-- Changed @orderby inside content to @bind="orderby" -->
 						<textarea id="OrderByExpression"
-						class="form-control font-monospace"
+						class="form-control"
 						rows="2"
 						placeholder="r.PricePerGB DESC"
 						@bind="_orderby"></textarea>
@@ -491,11 +493,11 @@
 				<div class="row g-3 p-2">
 					<div class="col-md-12">
 						<label for="SQL" class="form-label fw-bold mt-1">SQL Result</label>
-						<pre id="SQL" class="p-3 bg-dark rounded border mb-0 font-monospace @(_completeQueryError ? "text-danger border-danger" : "text-info")"
+						<pre id="SQL" class="p-3 bg-dark rounded border mb-0 @(_completeQueryError ? "text-danger border-danger" : "text-info")"
 						style="min-height: 120px; font-size: 0.95rem; line-height: 1.4;">@_completeSQLQuery</pre>
 
 						<label for="DynamicParameters" class="form-label fw-bold mt-1">Dynamic Parameters</label>
-						<pre id="DynamicParameters" class="p-3 bg-dark text-info rounded border mb-0 font-monospace"
+						<pre id="DynamicParameters" class="p-3 bg-dark text-info rounded border mb-0"
 						style="min-height: 120px; font-size: 0.95rem; line-height: 1.4;">
 							@_dynamicParameters
 						</pre>
@@ -532,7 +534,7 @@
 							<h6 class="fw-bold text-uppercase text-secondary fs-7 mb-3">
 								<i class="bi bi-diagram-3 me-1"></i> Grammar & Syntax Constraints
 							</h6>
-							<ul class="list-unstyled mb-0 font-monospace fs-7">
+							<ul class="list-unstyled mb-0 fs-7">
 								<li class="mb-3 d-flex align-items-start">
 									<span class="badge bg-danger me-2 mt-1" style="min-width: 85px;">Subqueries</span>
 									<div>
@@ -567,7 +569,7 @@
 							<h6 class="fw-bold text-uppercase text-secondary fs-7 mb-3">
 								<i class="bi bi-code-square me-1"></i> Types & Literal Formatting
 							</h6>
-							<ul class="list-unstyled mb-0 font-monospace fs-7">
+							<ul class="list-unstyled mb-0 fs-7">
 								<li class="mb-3 d-flex align-items-start">
 									<span class="badge bg-danger me-2 mt-1" style="min-width: 85px;">Dates</span>
 									<div>

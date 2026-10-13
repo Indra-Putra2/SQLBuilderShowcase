@@ -133,28 +133,32 @@
             <p class="text-muted">
                 The following example demonstrates a typical usage of the fluent API. It is not an exhaustive example of all available features and capabilities.
             </p>
-            <pre class="bg-dark text-light p-3 rounded"><code>// 1. Build and validate base query structure once
-            private static readonly IQueryFilter BaseQuery = QueryBuilder
-                .Create&lt;RamReadModel&gt;()
-                .From&lt;RamBaseModel&gt;("r")
-                .Select("r.*, b.name as brandname")
-                .Join&lt;BrandBaseModel&gt;("b", "b.id = r.brandid")
-                .ValidateBaseQuery();
+            <pre class="bg-dark text-light p-3 rounded">
+                <code>
+    // 1. Build and validate base query structure once
+    private static readonly IQueryFilter BaseQuery = QueryBuilder
+        .Create&lt;RamReadModel&gt;()
+        .From&lt;RamBaseModel&gt;("r")
+        .Select("r.*, b.name as brandname")
+        .Join&lt;BrandBaseModel&gt;("b", "b.id = r.brandid")
+        .ValidateBaseQuery();
 
-            // 2. Dynamically apply AST expression filters at runtime
-            [HttpGet]
-            public IActionResult Get([FromQuery] string? where, [FromQuery] string? orderBy, [FromQuery] int? limit = 10)
-            {
-                var sql = _query
-                    .Where(where)
-                    .OrderBy(orderBy)
-                    .Limit(limit)
-                    .Build();
+    // 2. Copy Base Query and dynamically apply AST expression filters at runtime
+    [HttpGet]
+    public IActionResult Get([FromQuery] string? where, [FromQuery] string? orderBy, [FromQuery] int? limit = 10)
+    {
+        var sql = _query
+            .CopyBase()
+            .Where(where)
+            .OrderBy(orderBy)
+            .Limit(limit)
+            .Build();
 
-                // compiled.SQL -> "SELECT r.*... WHERE r.price > @@p0 ORDER BY r.name LIMIT 10"
-                var result = _dbConnection.Query&lt;RamReadModel&gt;(compiled.SQL, compiled.Parameters);
-                return Ok(result);
-            }</code>
+        // compiled.SQL -> "SELECT r.*... WHERE r.price > @@p0 ORDER BY r.name LIMIT 10"
+        var result = _dbConnection.Query&lt;RamReadModel&gt;(compiled.SQL, compiled.Parameters);
+        return Ok(result);
+    }
+                </code>
             </pre>
         </section>
 
