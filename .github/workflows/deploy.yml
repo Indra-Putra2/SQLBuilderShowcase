@@ -40,7 +40,7 @@ jobs:
 
       - name: Prepare GitHub Pages files
         run: |
-          perl -0pi -e 's|<base href="[^"]*"\s*/?>|<base href="/TruSql/" />|' publish/wwwroot/index.html
+          perl -0pi -e 's|<base href="[^"]*"\s*/?>|<base href="/TruSqlShowcase/" />|' publish/wwwroot/index.html
           touch publish/wwwroot/.nojekyll
           cp publish/wwwroot/index.html publish/wwwroot/404.html
 
