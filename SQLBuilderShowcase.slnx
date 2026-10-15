@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="../HardwareInventoryLibrary/HardwareInventoryLibrary/HardwareInventoryLibrary.csproj" />
-  <Project Path="../SQLQueryBuilder/SQLQueryBuilder/SQLQueryBuilder.csproj" />
-  <Project Path="SQLBuilderShowcase/SQLBuilderShowcase.csproj" />
-</Solution>
